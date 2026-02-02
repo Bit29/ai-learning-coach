@@ -8,6 +8,7 @@ jobs:
   api-test:
     name: API Test
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: services/ai-learning-coach-api
@@ -38,11 +39,11 @@ jobs:
         with:
           context: ./services/ai-learning-coach-api
           push: false
-          tags: local/api:test
+          tags: local/ai-learning-coach-api:test
 
       - name: Build Worker Docker image (no push)
         uses: docker/build-push-action@v6
         with:
           context: ./services/ai-worker
           push: false
-          tags: local/worker:test
+          tags: local/ai-worker:test
