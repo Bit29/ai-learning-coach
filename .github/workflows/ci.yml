@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # 1) Spring Boot 테스트
+  api-test:
+    name: API Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: services/api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Run Gradle Test
+        run: ./gradlew test
+
+  # 2) Docker 빌드만 확인 (push는 안 함)
+  docker-build-check:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build API Docker image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./services/api
+          push: false
+          tags: local/api:test
+
+      - name: Build Worker Docker image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./services/worker
+          push: false
+          tags: local/worker:test
