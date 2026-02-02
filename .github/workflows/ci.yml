@@ -5,14 +5,12 @@ on:
     branches: ["main"]
 
 jobs:
-  # 1) Spring Boot 테스트
   api-test:
     name: API Test
     runs-on: ubuntu-latest
-
     defaults:
       run:
-        working-directory: services/api
+        working-directory: services/ai-learning-coach-api
 
     steps:
       - name: Checkout code
@@ -27,7 +25,6 @@ jobs:
       - name: Run Gradle Test
         run: ./gradlew test
 
-  # 2) Docker 빌드만 확인 (push는 안 함)
   docker-build-check:
     name: Docker Build Check
     runs-on: ubuntu-latest
@@ -39,13 +36,13 @@ jobs:
       - name: Build API Docker image (no push)
         uses: docker/build-push-action@v6
         with:
-          context: ./services/api
+          context: ./services/ai-learning-coach-api
           push: false
           tags: local/api:test
 
       - name: Build Worker Docker image (no push)
         uses: docker/build-push-action@v6
         with:
-          context: ./services/worker
+          context: ./services/ai-worker
           push: false
           tags: local/worker:test

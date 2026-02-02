@@ -35,7 +35,7 @@ jobs:
       - name: Build & Push API Image
         uses: docker/build-push-action@v6
         with:
-          context: ./services/api
+          context: ./services/ai-learning-coach-api
           push: true
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/ai-learning-coach-api:latest
@@ -44,7 +44,7 @@ jobs:
       - name: Build & Push Worker Image
         uses: docker/build-push-action@v6
         with:
-          context: ./services/worker
+          context: ./services/ai-worker
           push: true
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/ai-learning-coach-worker:latest
